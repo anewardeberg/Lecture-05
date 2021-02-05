@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">ServiceMusicApp</string>
     <string name="play">Play</string>
-    <string name="request_permission">Request Permission</string>
+    <string name="request_permission">Read Contacts</string>
     <string name="playing">Playing...</string>
+    <string name="promting_message">Prompting user for contacts permission</string>
+    <string name="permission_denied">Permission denied :(</string>
+    <string name="my_contacts">My Contacts</string>
 </resources>

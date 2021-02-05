@@ -7,17 +7,20 @@ import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import kotlinx.android.synthetic.main.activity_music.*
+import no.sample.servicemusicapp.databinding.ActivityMusicBinding
 
 class MusicActivity : AppCompatActivity() {
 
 
     var receiver : MusicPlayerReceiver? = null;
+    lateinit var binding : ActivityMusicBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_music)
+
+        binding = ActivityMusicBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
 
         //Register and start a local receiver
@@ -30,25 +33,29 @@ class MusicActivity : AppCompatActivity() {
         startService(intent)
 
 
-        buttonPlay.setOnClickListener{
+        binding.buttonPlay.setOnClickListener{
 
             // start a Music service with play command
             var intent = Intent(this@MusicActivity, MusicService::class.java)
             intent.putExtra(Common.EXTRA_COMMAND, Common.COMMAND_PLAY)
-            startService(intent)
 
-            buttonPlay.text = "Playing..."
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                startForegroundService(intent)
+            }else {
+                startService(intent)
+            }
+
+            binding.buttonPlay.text = "Playing..."
         }
 
-        buttonStop.setOnClickListener{
+        binding.buttonStop.setOnClickListener{
 
             // stop service
             var intent = Intent(this@MusicActivity, MusicService::class.java)
             stopService(intent)
 
-            buttonPlay.text = "Play"
+            binding.buttonPlay.text = "Play"
         }
-
 
         Log.d(this.javaClass.simpleName, "onCreate")
 
@@ -72,31 +79,12 @@ class MusicActivity : AppCompatActivity() {
         ) // registerReceiver will start the receiver to listen for action events
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.d(this.javaClass.simpleName, "onResume")
-
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d(this.javaClass.simpleName, "onPause")
-    }
-
-
-    override fun onStop() {
-        super.onStop()
-        Log.d(this.javaClass.simpleName, "onStop")
-
-    }
 
     override fun onDestroy() {
         super.onDestroy()
         Log.d(this.javaClass.simpleName, "onDestroy")
 
         unregisterReceiver(receiver) // unregister running MusicPlayerReceiver which was created during on create
-
-
     }
 
 
@@ -106,11 +94,11 @@ class MusicActivity : AppCompatActivity() {
         override fun onReceive(context: Context?, intent: Intent?) {
 
             if( intent?.action == Common.ACTION_PLAYING) {
-                buttonPlay.text = "Playing..."
+                binding.buttonPlay.text = "Playing..."
             }
 
             if( intent?.action == Common.ACTION_STOPPED) {
-                buttonPlay.text = "Play"
+                binding.buttonPlay.text = "Play"
             }
 
             Log.d(this.javaClass.simpleName, intent?.action)
