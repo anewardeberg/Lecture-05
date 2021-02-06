@@ -5,6 +5,8 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.IBinder
 import android.util.Log
+import no.sample.servicemusicapp.utils.Common
+import no.sample.servicemusicapp.utils.Utils
 
 class MusicService : Service() {
     val channelId = "Notification from Service"

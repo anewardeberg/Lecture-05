@@ -1,4 +1,4 @@
-package no.sample.servicemusicapp
+package no.sample.servicemusicapp.utils
 
 import android.app.*
 import android.content.Context
@@ -7,12 +7,16 @@ import android.database.Cursor
 import android.os.Build
 import android.provider.ContactsContract
 import androidx.core.app.NotificationCompat
+import no.sample.servicemusicapp.MusicActivity
+import no.sample.servicemusicapp.R
+import no.sample.servicemusicapp.models.Contact
 import java.lang.StringBuilder
 
 object Utils {
 
-    fun getContactsInString(context: Context) : String {
-        var stringBuilder =  StringBuilder("")
+    fun getContacts(context: Context) : ArrayList<Contact> {
+
+        var contacts = ArrayList<Contact>()
 
         val cur: Cursor? = context.contentResolver.query(
             ContactsContract.Contacts.CONTENT_URI,
@@ -34,16 +38,29 @@ object Utils {
                     while (pCur!!.moveToNext()) {
                         val phoneNo: String = pCur.getString(pCur.getColumnIndex(
                             ContactsContract.CommonDataKinds.Phone.NUMBER))
-                        stringBuilder.appendln("$name  Number $phoneNo" )
+
+                        contacts.add(Contact(name, phoneNo))
                     }
                     pCur.close()
                 }
             }
         }
-        cur?.close()
-        return stringBuilder.toString()
+
+        return contacts;
+
     }
 
+    fun getContactsInString(context: Context): String
+    {
+        var stringBuilder = StringBuilder()
+        var contacts = getContacts(context)
+
+        contacts.map {
+            stringBuilder.appendln("${it.name}   ${it.phone}")
+        }
+
+        return stringBuilder.toString()
+    }
 
     fun createNotification (context: Service, channelId: String) {
 

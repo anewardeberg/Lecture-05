@@ -6,4 +6,5 @@
     <string name="promting_message">Prompting user for contacts permission</string>
     <string name="permission_denied">Permission denied :(</string>
     <string name="my_contacts">My Contacts</string>
+    <string name="music">Music</string>
 </resources>

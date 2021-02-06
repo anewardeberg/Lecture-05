@@ -1,4 +1,4 @@
-package no.sample.servicemusicapp
+package no.sample.servicemusicapp.utils
 
 class Common {
 
@@ -15,6 +15,4 @@ class Common {
         const val COMMAND_PLAY : Int = 2
 
     }
-
-
 }
