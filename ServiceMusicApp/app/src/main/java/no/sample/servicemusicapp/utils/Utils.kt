@@ -14,6 +14,11 @@ import java.lang.StringBuilder
 
 object Utils {
 
+    /*
+    * getContacts returns the list of Contacts save on your device.
+    * Note: Implementation details for this function is out of scope for this lecture.
+    * */
+
     fun getContacts(context: Context) : ArrayList<Contact> {
 
         var contacts = ArrayList<Contact>()
@@ -50,6 +55,11 @@ object Utils {
 
     }
 
+
+    /*
+   * getContactsInString returns the string appended all the contacts on your device .
+   * */
+
     fun getContactsInString(context: Context): String
     {
         var stringBuilder = StringBuilder()
@@ -62,14 +72,20 @@ object Utils {
         return stringBuilder.toString()
     }
 
-    fun createNotification (context: Service, channelId: String) {
+    /*
+   * createNotification creates  a visible notification for a channelId and associate it with a service.
+   *  Note: Implementation details for this function is out of scope for this lecture.
+
+   * */
+
+    fun createNotification (sevice: Service, channelId: String) {
 
         val pendingIntent: PendingIntent =
-            Intent(context, MusicActivity::class.java).let { notificationIntent ->
-                PendingIntent.getActivity(context, 0, notificationIntent, 0)
+            Intent(sevice, MusicActivity::class.java).let { notificationIntent ->
+                PendingIntent.getActivity(sevice, 0, notificationIntent, 0)
             }
 
-        val notification: Notification = NotificationCompat.Builder(context, channelId)
+        val notification: Notification = NotificationCompat.Builder(sevice, channelId)
             .setContentTitle("Notification")
             .setContentText("Music Service")
             .setSmallIcon(R.drawable.ic_stat_name)
@@ -77,9 +93,14 @@ object Utils {
             .setTicker("Playing music")
             .build()
 
-        context.startForeground(100, notification)
+        sevice.startForeground(100, notification)
 
     }
+
+    /*
+  * createNotificationChannel creates  a notification channel for channelId.
+  *  Note: Implementation details for this function is out of scope for this lecture.
+  * */
 
     fun createNotificationChannel(context: Context, channelId: String) {
         if (Build.VERSION.SDK_INT >= 26) {

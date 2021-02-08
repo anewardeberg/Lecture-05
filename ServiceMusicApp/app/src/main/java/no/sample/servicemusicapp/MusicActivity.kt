@@ -90,7 +90,7 @@ class MusicActivity : AppCompatActivity() {
 
 
 
-    inner class MusicPlayerReceiver: BroadcastReceiver(){
+    inner class MusicPlayerReceiver: BroadcastReceiver() {
 
         override fun onReceive(context: Context?, intent: Intent?) {
 
